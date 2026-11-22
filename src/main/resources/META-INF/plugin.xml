@@ -62,6 +62,9 @@
       <action id="CodeSonar.Explain" class="com.github.jclsn.codesonar.actions.ExplainAction"
               text="Explain Warning"
               description="Explain the warnings in the line of the caret"/>
+      <action id="CodeSonar.OpenHub" class="com.github.jclsn.codesonar.actions.OpenHubAction"
+              text="Open in Hub"
+              description="Open the warning at the caret on the hub, or else the shown analysis"/>
       <action id="CodeSonar.Warnings" class="com.github.jclsn.codesonar.actions.WarningsAction"
               text="Show Warnings"
               description="List the shown warnings in a tool window"/>
