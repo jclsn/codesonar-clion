@@ -1,0 +1,23 @@
+<idea-plugin>
+  <id>com.github.jclsn.codesonar</id>
+  <name>CodeSonar</name>
+  <vendor url="https://github.com/jclsn">Jan Claußen</vendor>
+
+  <description><![CDATA[
+    CodeSonar warnings in CLion, from a CodeSonar hub or an exported SARIF
+    file. The work is done by the
+    <a href="https://github.com/jclsn/codesonar-lsp">codesonar-lsp</a>
+    language server, which must be installed.
+    <ul>
+      <li>choose, show, hide and delete the analyses of the hub project</li>
+      <li>explain warnings with the events that lead to them and the rules
+          they may violate</li>
+      <li>run <code>codesonar analyze</code> for the workspace, with the hub,
+          project, presets and checks of its <code>codesonar.conf</code></li>
+      <li>list the shown warnings and open them on the hub</li>
+    </ul>
+  ]]></description>
+
+  <depends>com.intellij.modules.platform</depends>
+  <depends>com.intellij.modules.lsp</depends>
+</idea-plugin>
