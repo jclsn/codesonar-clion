@@ -25,5 +25,10 @@
     <platform.lsp.integrationProvider
         implementation="com.github.jclsn.codesonar.lsp.CodeSonarLspIntegrationProvider"/>
     <notificationGroup id="CodeSonar" displayType="BALLOON"/>
+    <applicationConfigurable
+        parentId="tools"
+        id="com.github.jclsn.codesonar.settings"
+        displayName="CodeSonar"
+        instance="com.github.jclsn.codesonar.settings.CodeSonarConfigurable"/>
   </extensions>
 </idea-plugin>

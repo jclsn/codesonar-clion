@@ -1,6 +1,7 @@
 package com.github.jclsn.codesonar.lsp
 
 import com.github.jclsn.codesonar.Notifier
+import com.github.jclsn.codesonar.settings.CodeSonarSettings
 import com.intellij.execution.configurations.PathEnvironmentVariableUtil
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.guessProjectDir
@@ -25,7 +26,7 @@ class CodeSonarLspIntegrationProvider : LspIntegrationProvider {
         if (!file.isInLocalFileSystem || !SourceFiles.isSource(file.name)) return
 
         val root = workspaceRoot(project, file) ?: return
-        val configured = ServerExecutable.DEFAULT
+        val configured = CodeSonarSettings.getInstance().state.serverPath
         val executable = ServerExecutable.find(configured) { PathEnvironmentVariableUtil.findFirst(it) }
 
         if (executable == null) {
@@ -50,7 +51,7 @@ class CodeSonarLspIntegrationProvider : LspIntegrationProvider {
             Notifier.error(
                 project,
                 "The server \"$configured\" was not found. Install codesonar-lsp with " +
-                    "\"cargo install --path .\".",
+                    "\"cargo install --path .\" or set its path in Settings | Tools | CodeSonar.",
             )
         }
     }

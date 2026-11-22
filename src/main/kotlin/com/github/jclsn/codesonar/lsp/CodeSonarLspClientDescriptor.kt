@@ -1,5 +1,6 @@
 package com.github.jclsn.codesonar.lsp
 
+import com.github.jclsn.codesonar.settings.CodeSonarSettings
 import com.intellij.execution.configurations.GeneralCommandLine
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VfsUtilCore
@@ -18,4 +19,7 @@ class CodeSonarLspClientDescriptor(
 
     override fun createCommandLine(): GeneralCommandLine =
         GeneralCommandLine(executable.toString()).withWorkDirectory(root.path)
+
+    override fun createInitializationOptions(): Any =
+        CodeSonarSettings.getInstance().initializationOptions()
 }
