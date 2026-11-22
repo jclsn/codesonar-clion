@@ -78,6 +78,9 @@
       <action id="CodeSonar.AnalyzeAs" class="com.github.jclsn.codesonar.actions.AnalyzeAsAction"
               text="Analyze As..."
               description="Run an analysis with a name on the hub"/>
+      <action id="CodeSonar.Conf" class="com.github.jclsn.codesonar.actions.ConfAction"
+              text="Workspace Configuration"
+              description="Open the codesonar.conf of the workspace, or start it"/>
       <separator/>
       <action id="CodeSonar.Connect" class="com.github.jclsn.codesonar.actions.ConnectAction"
               text="Connect to Hub..."
