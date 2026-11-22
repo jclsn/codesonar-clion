@@ -1,15 +1,24 @@
 package com.github.jclsn.codesonar.lsp
 
 import com.github.jclsn.codesonar.CodeSonarService
+import com.github.jclsn.codesonar.Commands
+import com.github.jclsn.codesonar.actions.ExplainAction
 import com.github.jclsn.codesonar.settings.CodeSonarSettings
 import com.google.gson.JsonObject
 import com.intellij.execution.configurations.GeneralCommandLine
+import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VfsUtilCore
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.platform.lsp.api.Lsp4jClient
+import com.intellij.platform.lsp.api.LspClient
 import com.intellij.platform.lsp.api.LspClientDescriptor
 import com.intellij.platform.lsp.api.LspServerNotificationsHandler
+import com.intellij.platform.lsp.api.customization.LspCommandsCustomizer
+import com.intellij.platform.lsp.api.customization.LspCommandsSupport
+import com.intellij.platform.lsp.api.customization.LspCustomization
+import org.eclipse.lsp4j.Command
 import java.nio.file.Path
 
 /** Starts codesonar-lsp for the C and C++ files of a workspace. */
@@ -37,4 +46,24 @@ class CodeSonarLspClientDescriptor(
                 if (!project.isDisposed) CodeSonarService.getInstance(project).onLoaded(params)
             }
         })
+
+    override val lspCustomization: LspCustomization = object : LspCustomization() {
+        override val commandsCustomizer: LspCommandsCustomizer = object : LspCommandsSupport() {
+            // The explain code action is shown here instead of in the server.
+            override fun executeCommand(lspClient: LspClient, contextFile: VirtualFile, command: Command) {
+                if (command.command != Commands.EXPLAIN) {
+                    super.executeCommand(lspClient, contextFile, command)
+                    return
+                }
+
+                ApplicationManager.getApplication().invokeLater {
+                    if (project.isDisposed) return@invokeLater
+
+                    val editor = FileEditorManager.getInstance(project).selectedTextEditor
+                        ?.takeIf { it.virtualFile == contextFile }
+                    ExplainAction.explain(project, editor, command.arguments?.firstOrNull())
+                }
+            }
+        }
+    }
 }

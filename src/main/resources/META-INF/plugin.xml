@@ -53,6 +53,9 @@
               text="Hide Analysis"
               description="Turn the shown analysis off until an analysis is shown again"/>
       <separator/>
+      <action id="CodeSonar.Explain" class="com.github.jclsn.codesonar.actions.ExplainAction"
+              text="Explain Warning"
+              description="Explain the warnings in the line of the caret"/>
       <action id="CodeSonar.Status" class="com.github.jclsn.codesonar.actions.StatusAction"
               text="Status"
               description="Show the analysis, its warnings and how analyses are run"/>
