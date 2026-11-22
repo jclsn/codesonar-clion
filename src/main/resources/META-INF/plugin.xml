@@ -56,6 +56,13 @@
       <action id="CodeSonar.Status" class="com.github.jclsn.codesonar.actions.StatusAction"
               text="Status"
               description="Show the analysis, its warnings and how analyses are run"/>
+      <separator/>
+      <action id="CodeSonar.Connect" class="com.github.jclsn.codesonar.actions.ConnectAction"
+              text="Connect to Hub..."
+              description="Sign in to a hub and choose one of its projects"/>
+      <action id="CodeSonar.Projects" class="com.github.jclsn.codesonar.actions.ProjectsAction"
+              text="Projects..."
+              description="Choose another project of the hub"/>
     </group>
 
     <group id="CodeSonar.ToolsMenu" text="CodeSonar" popup="true">
