@@ -72,6 +72,13 @@
               text="Status"
               description="Show the analysis, its warnings and how analyses are run"/>
       <separator/>
+      <action id="CodeSonar.Analyze" class="com.github.jclsn.codesonar.actions.AnalyzeAction"
+              text="Analyze"
+              description="Run codesonar analyze for the workspace and show the new analysis"/>
+      <action id="CodeSonar.AnalyzeAs" class="com.github.jclsn.codesonar.actions.AnalyzeAsAction"
+              text="Analyze As..."
+              description="Run an analysis with a name on the hub"/>
+      <separator/>
       <action id="CodeSonar.Connect" class="com.github.jclsn.codesonar.actions.ConnectAction"
               text="Connect to Hub..."
               description="Sign in to a hub and choose one of its projects"/>
