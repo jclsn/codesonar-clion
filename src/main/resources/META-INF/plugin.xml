@@ -37,6 +37,9 @@
 
   <actions>
     <group id="CodeSonar.Actions">
+      <action id="CodeSonar.Analyses" class="com.github.jclsn.codesonar.actions.AnalysesAction"
+              text="Analyses..."
+              description="Choose, show, hide and delete the analyses of the hub project"/>
       <action id="CodeSonar.Load" class="com.github.jclsn.codesonar.actions.LoadAction"
               text="Load Configured Analysis"
               description="Show the configured analysis"/>
