@@ -37,6 +37,19 @@
 
   <actions>
     <group id="CodeSonar.Actions">
+      <action id="CodeSonar.Load" class="com.github.jclsn.codesonar.actions.LoadAction"
+              text="Load Configured Analysis"
+              description="Show the configured analysis"/>
+      <action id="CodeSonar.LoadSarif" class="com.github.jclsn.codesonar.actions.LoadSarifAction"
+              text="Load SARIF File..."
+              description="Show the warnings of an exported SARIF file"/>
+      <action id="CodeSonar.Refresh" class="com.github.jclsn.codesonar.actions.RefreshAction"
+              text="Refresh"
+              description="Load the shown analysis again"/>
+      <action id="CodeSonar.Hide" class="com.github.jclsn.codesonar.actions.HideAction"
+              text="Hide Analysis"
+              description="Turn the shown analysis off until an analysis is shown again"/>
+      <separator/>
       <action id="CodeSonar.Status" class="com.github.jclsn.codesonar.actions.StatusAction"
               text="Status"
               description="Show the analysis, its warnings and how analyses are run"/>
