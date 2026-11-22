@@ -33,6 +33,12 @@
     <statusBarWidgetFactory
         id="CodeSonar"
         implementation="com.github.jclsn.codesonar.ui.CodeSonarStatusBarWidgetFactory"/>
+    <toolWindow
+        id="CodeSonar"
+        anchor="bottom"
+        icon="AllIcons.Toolwindows.ToolWindowProblemsEmpty"
+        doNotActivateOnStart="true"
+        factoryClass="com.github.jclsn.codesonar.ui.WarningsToolWindowFactory"/>
   </extensions>
 
   <actions>
@@ -56,6 +62,9 @@
       <action id="CodeSonar.Explain" class="com.github.jclsn.codesonar.actions.ExplainAction"
               text="Explain Warning"
               description="Explain the warnings in the line of the caret"/>
+      <action id="CodeSonar.Warnings" class="com.github.jclsn.codesonar.actions.WarningsAction"
+              text="Show Warnings"
+              description="List the shown warnings in a tool window"/>
       <action id="CodeSonar.Status" class="com.github.jclsn.codesonar.actions.StatusAction"
               text="Status"
               description="Show the analysis, its warnings and how analyses are run"/>
