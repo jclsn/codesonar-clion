@@ -1,11 +1,15 @@
 package com.github.jclsn.codesonar.lsp
 
+import com.github.jclsn.codesonar.CodeSonarService
 import com.github.jclsn.codesonar.settings.CodeSonarSettings
+import com.google.gson.JsonObject
 import com.intellij.execution.configurations.GeneralCommandLine
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VfsUtilCore
 import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.platform.lsp.api.Lsp4jClient
 import com.intellij.platform.lsp.api.LspClientDescriptor
+import com.intellij.platform.lsp.api.LspServerNotificationsHandler
 import java.nio.file.Path
 
 /** Starts codesonar-lsp for the C and C++ files of a workspace. */
@@ -22,4 +26,15 @@ class CodeSonarLspClientDescriptor(
 
     override fun createInitializationOptions(): Any =
         CodeSonarSettings.getInstance().initializationOptions()
+
+    override fun createLsp4jClient(handler: LspServerNotificationsHandler): Lsp4jClient =
+        CodeSonarLanguageClient(handler, object : CodeSonarLanguageClient.Listener {
+            override fun loading(params: JsonObject) {
+                if (!project.isDisposed) CodeSonarService.getInstance(project).onLoading(params)
+            }
+
+            override fun loaded(params: JsonObject) {
+                if (!project.isDisposed) CodeSonarService.getInstance(project).onLoaded(params)
+            }
+        })
 }
