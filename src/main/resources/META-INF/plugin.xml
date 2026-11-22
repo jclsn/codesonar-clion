@@ -30,5 +30,21 @@
         id="com.github.jclsn.codesonar.settings"
         displayName="CodeSonar"
         instance="com.github.jclsn.codesonar.settings.CodeSonarConfigurable"/>
+    <statusBarWidgetFactory
+        id="CodeSonar"
+        implementation="com.github.jclsn.codesonar.ui.CodeSonarStatusBarWidgetFactory"/>
   </extensions>
+
+  <actions>
+    <group id="CodeSonar.Actions">
+      <action id="CodeSonar.Status" class="com.github.jclsn.codesonar.actions.StatusAction"
+              text="Status"
+              description="Show the analysis, its warnings and how analyses are run"/>
+    </group>
+
+    <group id="CodeSonar.ToolsMenu" text="CodeSonar" popup="true">
+      <reference ref="CodeSonar.Actions"/>
+      <add-to-group group-id="ToolsMenu" anchor="last"/>
+    </group>
+  </actions>
 </idea-plugin>
