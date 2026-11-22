@@ -20,4 +20,10 @@
 
   <depends>com.intellij.modules.platform</depends>
   <depends>com.intellij.modules.lsp</depends>
+
+  <extensions defaultExtensionNs="com.intellij">
+    <platform.lsp.integrationProvider
+        implementation="com.github.jclsn.codesonar.lsp.CodeSonarLspIntegrationProvider"/>
+    <notificationGroup id="CodeSonar" displayType="BALLOON"/>
+  </extensions>
 </idea-plugin>
