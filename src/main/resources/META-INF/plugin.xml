@@ -81,6 +81,12 @@
       <action id="CodeSonar.Conf" class="com.github.jclsn.codesonar.actions.ConfAction"
               text="Workspace Configuration"
               description="Open the codesonar.conf of the workspace, or start it"/>
+      <action id="CodeSonar.Presets" class="com.github.jclsn.codesonar.actions.PresetsAction"
+              text="Presets..."
+              description="Choose the CodeSonar presets of analyses"/>
+      <action id="CodeSonar.Checks" class="com.github.jclsn.codesonar.actions.ChecksAction"
+              text="Checks..."
+              description="Choose the checks (warning classes) of analyses"/>
       <separator/>
       <action id="CodeSonar.Connect" class="com.github.jclsn.codesonar.actions.ConnectAction"
               text="Connect to Hub..."
