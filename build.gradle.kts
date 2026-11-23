@@ -56,6 +56,9 @@ tasks {
     test {
         useJUnitPlatform()
         // The protocol tests run against this server, see the README.
-        inputs.property("codesonarLsp", providers.environmentVariable("CODESONAR_LSP").orElse(""))
+        val server = providers.environmentVariable("CODESONAR_LSP").orElse("")
+        inputs.property("codesonarLsp", server)
+        // The daemon may have been started without it.
+        doFirst { environment("CODESONAR_LSP", server.get()) }
     }
 }
