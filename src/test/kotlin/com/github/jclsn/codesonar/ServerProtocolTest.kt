@@ -1,5 +1,6 @@
 package com.github.jclsn.codesonar
 
+import com.github.jclsn.codesonar.actions.ToggleAction
 import com.github.jclsn.codesonar.lsp.CodeSonarLanguageClient
 import com.github.jclsn.codesonar.model.DisableCheckArgument
 import com.github.jclsn.codesonar.model.DisableCheckResult
@@ -230,6 +231,21 @@ class ServerProtocolTest {
 
         val shown = Status.parse(execute(Commands.LOAD))
         assertFalse(shown.hidden)
+        assertEquals(12, shown.shown)
+    }
+
+    @Test
+    fun `toggles the analysis`() {
+        awaitLoaded()
+
+        val hidden = Status.parse(execute(Commands.TOGGLE))
+        assertTrue(hidden.hidden)
+        assertEquals("Show Analysis", ToggleAction.text(hidden.hidden))
+        assertEquals(emptyList(), Warning.parseList(execute(Commands.WARNINGS)))
+
+        val shown = Status.parse(execute(Commands.TOGGLE))
+        assertFalse(shown.hidden)
+        assertEquals("Hide Analysis", ToggleAction.text(shown.hidden))
         assertEquals(12, shown.shown)
     }
 

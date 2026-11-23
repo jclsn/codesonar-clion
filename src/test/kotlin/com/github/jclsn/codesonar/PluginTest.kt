@@ -28,7 +28,7 @@ import com.intellij.testFramework.fixtures.BasePlatformTestCase
 /** Loads the plugin in a headless IDE: its descriptor, services and views. */
 class PluginTest : BasePlatformTestCase() {
     private val actions = listOf(
-        "Analyses", "Load", "LoadSarif", "Refresh", "Hide", "Explain", "OpenHub", "ResolveFixed", "ResolveFalsePositive", "DisableCheck",
+        "Analyses", "Load", "LoadSarif", "Refresh", "Toggle", "Explain", "OpenHub", "ResolveFixed", "ResolveFalsePositive", "DisableCheck",
         "Warnings", "Status",
         "Analyze", "AnalyzeAs", "Conf", "Presets", "Checks", "Connect", "Projects",
     )
