@@ -3,6 +3,7 @@ package com.github.jclsn.codesonar.lsp
 import com.github.jclsn.codesonar.CodeSonarService
 import com.github.jclsn.codesonar.Commands
 import com.github.jclsn.codesonar.actions.ExplainAction
+import com.github.jclsn.codesonar.actions.ResolveAction
 import com.github.jclsn.codesonar.settings.CodeSonarSettings
 import com.google.gson.JsonObject
 import com.intellij.execution.configurations.GeneralCommandLine
@@ -49,20 +50,25 @@ class CodeSonarLspClientDescriptor(
 
     override val lspCustomization: LspCustomization = object : LspCustomization() {
         override val commandsCustomizer: LspCommandsCustomizer = object : LspCommandsSupport() {
-            // The explain code action is shown here instead of in the server.
+            // The explain code action is shown here instead of in the server,
+            // and the outcome of resolving warnings like the other messages.
             override fun executeCommand(lspClient: LspClient, contextFile: VirtualFile, command: Command) {
-                if (command.command != Commands.EXPLAIN) {
-                    super.executeCommand(lspClient, contextFile, command)
-                    return
-                }
+                val argument = command.arguments?.firstOrNull()
 
-                ApplicationManager.getApplication().invokeLater {
-                    if (project.isDisposed) return@invokeLater
+                when (command.command) {
+                    Commands.EXPLAIN -> onEdt {
+                        val editor = FileEditorManager.getInstance(project).selectedTextEditor
+                            ?.takeIf { it.virtualFile == contextFile }
+                        ExplainAction.explain(project, editor, argument)
+                    }
 
-                    val editor = FileEditorManager.getInstance(project).selectedTextEditor
-                        ?.takeIf { it.virtualFile == contextFile }
-                    ExplainAction.explain(project, editor, command.arguments?.firstOrNull())
+                    Commands.RESOLVE -> onEdt { ResolveAction.resolve(project, argument) }
+                    else -> super.executeCommand(lspClient, contextFile, command)
                 }
+            }
+
+            private fun onEdt(action: () -> Unit) = ApplicationManager.getApplication().invokeLater {
+                if (!project.isDisposed) action()
             }
         }
     }

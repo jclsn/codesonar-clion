@@ -65,6 +65,13 @@
       <action id="CodeSonar.OpenHub" class="com.github.jclsn.codesonar.actions.OpenHubAction"
               text="Open in Hub"
               description="Open the warning at the caret on the hub, or else the shown analysis"/>
+      <action id="CodeSonar.ResolveFixed" class="com.github.jclsn.codesonar.actions.ResolveFixedAction"
+              text="Mark as Fixed"
+              description="Mark the warnings in the line of the caret as fixed on the hub"/>
+      <action id="CodeSonar.ResolveFalsePositive"
+              class="com.github.jclsn.codesonar.actions.ResolveFalsePositiveAction"
+              text="Mark as False Positive"
+              description="Mark the warnings in the line of the caret as false positives on the hub"/>
       <action id="CodeSonar.Warnings" class="com.github.jclsn.codesonar.actions.WarningsAction"
               text="Show Warnings"
               description="List the shown warnings in a tool window"/>

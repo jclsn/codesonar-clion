@@ -9,6 +9,7 @@ server with the LSP support of the IDE and adds what LSP has no counterpart
 for:
 
 - choose, show, hide and delete the analyses of the hub project
+- resolve warnings on the hub as fixed or as false positives
 - explain warnings in a popup, with the events that lead to them and the
   rules they may violate
 - run `codesonar analyze` for the workspace, incrementally, with the hub,
@@ -19,8 +20,9 @@ for:
 
 The warnings are regular diagnostics of the IDE: they are highlighted in
 the editor, explained on hover and listed in the Problems tool window.
-`Alt+Enter` on a warning offers its quick fixes, "Explain" and "Open in
-CodeSonar Hub".
+`Alt+Enter` on a warning offers its quick fixes, "Explain", "Open in
+CodeSonar Hub" and, for warnings of a hub, "Mark as fixed" and "Mark as a
+false positive".
 
 It is the counterpart of [codesonar.vim] for CLion.
 
@@ -93,8 +95,10 @@ workspace open.
 | Hide Analysis            | `:CodeSonarHide`        | Turn the shown analysis off until an analysis is shown again. |
 | Explain Warning          | `:CodeSonarExplain`     | Explain the warnings in the line of the caret in a popup, like the "Explain" quick fix: the message, the events that lead to the warning and the rules it may violate. The places of events are links into the code. `j` `k` `Ctrl+D` `Ctrl+U` `g` `G` scroll, `o` opens the warning on the hub, `d` the documentation, `q` or `Esc` closes. |
 | Open in Hub              | `:CodeSonarOpenHub`     | Open the warning at the caret on the hub, or else the shown analysis. |
+| Mark as Fixed            | `:CodeSonarResolve fixed` | Resolve the warnings in the line of the caret on the hub, like the quick fix: their state becomes Fixed. The hub keeps it for later analyses, and resolved warnings are not shown any more. Your hub user needs the permission to change warnings. |
+| Mark as False Positive   | `:CodeSonarResolve false-positive` | Resolve them as wrong: their finding becomes False Positive. |
 | Show Warnings            | `:CodeSonarDiagnostics` | List the shown warnings in the CodeSonar tool window. `Enter` or a double click goes to a warning. The list is updated when another analysis is shown. |
-| Status                   | `:CodeSonarStatus`      | Show the analysis with its page on the hub, how many of its warnings are unchanged, moved, changed and unverified, and the hub and presets of new analyses. `o` opens the analysis on the hub. A click on the status bar widget shows it as well. |
+| Status                   | `:CodeSonarStatus`      | Show the analysis with its page on the hub, how many of its warnings are unchanged, moved, changed, unverified and resolved, and the hub and presets of new analyses. `o` opens the analysis on the hub. A click on the status bar widget shows it as well. |
 | Analyze                  | `:CodeSonarAnalyze`     | Run `codesonar analyze` for the workspace in the Run tool window. When it succeeds, the new analysis is shown. |
 | Analyze As...            | `:CodeSonarAnalyze name` | Run an analysis with a name on the hub. |
 | Workspace Configuration  | `:CodeSonarConf`        | Open the `codesonar.conf` of the workspace. Without it, or without the section of codesonar-lsp in it, a form asks for the basic settings first. |

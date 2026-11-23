@@ -54,6 +54,7 @@ object StatusHtml {
         "unchanged" -> palette.unchanged
         "moved" -> palette.moved
         "changed" -> palette.changed
+        "resolved" -> palette.accent
         else -> palette.muted
     }
 }

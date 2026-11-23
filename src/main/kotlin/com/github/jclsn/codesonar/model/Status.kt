@@ -17,7 +17,7 @@ data class Status(
     val url: String? = null,
     val total: Int = 0,
     val shown: Int = 0,
-    /** How many warnings are unchanged, moved, changed and unverified. */
+    /** How many warnings are unchanged, moved, changed, unverified and resolved. */
     val counts: Map<String, Int> = emptyMap(),
 ) {
     /** The counts that are not zero, in the order of [KINDS]. */
@@ -35,7 +35,7 @@ data class Status(
     }
 
     companion object {
-        val KINDS = listOf("unchanged", "moved", "changed", "unverified")
+        val KINDS = listOf("unchanged", "moved", "changed", "unverified", "resolved")
 
         fun parse(json: JsonElement?): Status {
             val value = json.objectOrNull() ?: return Status()
