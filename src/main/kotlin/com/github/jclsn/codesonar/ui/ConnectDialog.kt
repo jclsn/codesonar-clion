@@ -12,17 +12,18 @@ import javax.swing.JComponent
 
 /**
  * Asks for the hub to sign in to. Without a URL, the configured hub is used.
- * The user and the password start as the ones of the settings, and are
- * kept there: the server forgets them when it stops.
+ * The hub, the user and the password start as the ones of the settings,
+ * and are kept there: the server forgets them when it stops, and the
+ * workspace configuration keeps the address of the hub without `https`.
  */
 class ConnectDialog(
     project: Project,
     private val settings: CodeSonarSettings = CodeSonarSettings.getInstance(),
 ) : DialogWrapper(project) {
-    private val url = JBTextField(32).apply { emptyText.text = "The configured hub" }
+    private val url = JBTextField(settings.state.hubUrl, 32).apply { emptyText.text = "The configured hub" }
     private val username = JBTextField(settings.state.username, 32).apply { emptyText.text = "The configured user" }
     private val password = JBPasswordField().apply { text = settings.password.orEmpty() }
-    private val remember = JBCheckBox("Remember the user and the password", true)
+    private val remember = JBCheckBox("Remember the hub, the user and the password", true)
 
     init {
         title = "Connect to CodeSonar Hub"
@@ -43,12 +44,16 @@ class ConnectDialog(
     fun argument(): Map<String, String> =
         argument(url.text, username.text, String(password.password))
 
-    /** Keeps the user that was entered for the next start of the IDE. */
+    /** Keeps what was entered for the next start of the IDE. */
     fun remember() {
-        if (!remember.isSelected || username.text.isBlank()) return
+        if (!remember.isSelected) return
 
-        settings.state.username = username.text.trim()
-        settings.password = String(password.password)
+        if (url.text.isNotBlank()) settings.state.hubUrl = url.text.trim()
+
+        if (username.text.isNotBlank()) {
+            settings.state.username = username.text.trim()
+            settings.password = String(password.password)
+        }
     }
 
     companion object {
