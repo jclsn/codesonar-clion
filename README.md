@@ -100,7 +100,7 @@ workspace open.
 | Workspace Configuration  | `:CodeSonarConf`        | Open the `codesonar.conf` of the workspace. Without it, or without the section of codesonar-lsp in it, a form asks for the basic settings first. |
 | Presets...               | `:CodeSonarPresets`     | Tick the CodeSonar presets of analyses, e.g. `misrac2025`. The field filters them while typing. |
 | Checks...                | `:CodeSonarChecks`      | Tick the checks (warning classes) of analyses. Checks that differ from CodeSonar's default are marked "(changed)". |
-| Connect to Hub...        | `:CodeSonarConnect`     | Sign in to a hub and choose one of its projects. Without a URL, the configured hub is used. |
+| Connect to Hub...        | `:CodeSonarConnect`     | Sign in to a hub and choose one of its projects. Without a URL, the configured hub is used. The user and the password are kept in the settings, unless "Remember" is unticked. |
 | Projects...              | `:CodeSonarProjects`    | Choose another project of the hub. |
 
 What differs from codesonar.vim:

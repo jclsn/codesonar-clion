@@ -1,18 +1,28 @@
 package com.github.jclsn.codesonar.ui
 
+import com.github.jclsn.codesonar.settings.CodeSonarSettings
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.DialogWrapper
+import com.intellij.ui.components.JBCheckBox
 import com.intellij.ui.components.JBPasswordField
 import com.intellij.ui.components.JBTextField
 import com.intellij.ui.dsl.builder.AlignX
 import com.intellij.ui.dsl.builder.panel
 import javax.swing.JComponent
 
-/** Asks for the hub to sign in to. Without a URL, the configured hub is used. */
-class ConnectDialog(project: Project) : DialogWrapper(project) {
+/**
+ * Asks for the hub to sign in to. Without a URL, the configured hub is used.
+ * The user and the password start as the ones of the settings, and are
+ * kept there: the server forgets them when it stops.
+ */
+class ConnectDialog(
+    project: Project,
+    private val settings: CodeSonarSettings = CodeSonarSettings.getInstance(),
+) : DialogWrapper(project) {
     private val url = JBTextField(32).apply { emptyText.text = "The configured hub" }
-    private val username = JBTextField(32).apply { emptyText.text = "The configured user" }
-    private val password = JBPasswordField()
+    private val username = JBTextField(settings.state.username, 32).apply { emptyText.text = "The configured user" }
+    private val password = JBPasswordField().apply { text = settings.password.orEmpty() }
+    private val remember = JBCheckBox("Remember the user and the password", true)
 
     init {
         title = "Connect to CodeSonar Hub"
@@ -24,6 +34,7 @@ class ConnectDialog(project: Project) : DialogWrapper(project) {
         row("Hub URL:") { cell(url).align(AlignX.FILL) }
         row("User:") { cell(username).align(AlignX.FILL) }
         row("Password:") { cell(password).align(AlignX.FILL) }
+        row { cell(remember).comment("In Settings | Tools | CodeSonar and the password store of the IDE") }
     }
 
     override fun getPreferredFocusedComponent(): JComponent = url
@@ -31,6 +42,14 @@ class ConnectDialog(project: Project) : DialogWrapper(project) {
     /** The argument of `codesonar.connect`. */
     fun argument(): Map<String, String> =
         argument(url.text, username.text, String(password.password))
+
+    /** Keeps the user that was entered for the next start of the IDE. */
+    fun remember() {
+        if (!remember.isSelected || username.text.isBlank()) return
+
+        settings.state.username = username.text.trim()
+        settings.password = String(password.password)
+    }
 
     companion object {
         /** Only what was entered; a password belongs to a user. */

@@ -21,6 +21,7 @@ class ConnectAction : CodeSonarAction() {
         val dialog = ConnectDialog(project)
         if (!dialog.showAndGet()) return
 
+        dialog.remember()
         service.execute(Commands.CONNECT, dialog.argument()) {
             ProjectChooser.show(project, HubProject.parseList(it))
         }
