@@ -13,7 +13,7 @@ class StatusTest {
             """{"loaded": true, "hidden": false, "hub": "http://hub:7340", "project": "test_project",
                 "presets": ["security", "cert"], "conf": "/ws/codesonar.conf", "name": "test_project analysis 3",
                 "key": "abc", "hubId": "12", "url": "http://hub:7340/analysis/12.html", "total": 9, "shown": 7,
-                "counts": {"unchanged": 5, "moved": 2, "changed": 2, "unverified": 0}}""",
+                "counts": {"unchanged": 5, "moved": 2, "changed": 2, "unverified": 0, "resolved": 1}}""",
         ),
     )
 
@@ -28,7 +28,7 @@ class StatusTest {
         assertEquals("http://hub:7340/analysis/12.html", loaded.url)
         assertEquals(9, loaded.total)
         assertEquals(7, loaded.shown)
-        assertEquals(listOf("unchanged" to 5, "moved" to 2, "changed" to 2), loaded.details())
+        assertEquals(listOf("unchanged" to 5, "moved" to 2, "changed" to 2, "resolved" to 1), loaded.details())
     }
 
     @Test
@@ -61,7 +61,7 @@ class StatusTest {
     @Test
     fun `summarizes the analysis`() {
         assertEquals(
-            "test_project analysis 3: 7 of 9 warnings shown (5 unchanged, 2 moved, 2 changed)",
+            "test_project analysis 3: 7 of 9 warnings shown (5 unchanged, 2 moved, 2 changed, 1 resolved)",
             loaded.summary(),
         )
         assertEquals(

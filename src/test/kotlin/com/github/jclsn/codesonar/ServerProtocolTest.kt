@@ -3,6 +3,8 @@ package com.github.jclsn.codesonar
 import com.github.jclsn.codesonar.lsp.CodeSonarLanguageClient
 import com.github.jclsn.codesonar.model.Explanation
 import com.github.jclsn.codesonar.model.Json
+import com.github.jclsn.codesonar.model.Resolution
+import com.github.jclsn.codesonar.model.ResolveArgument
 import com.github.jclsn.codesonar.model.Status
 import com.github.jclsn.codesonar.model.Warning
 import com.github.jclsn.codesonar.model.WorkspaceProject
@@ -35,6 +37,7 @@ import java.util.concurrent.TimeUnit
 import kotlin.test.Test
 import kotlin.test.assertContains
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
@@ -189,6 +192,18 @@ class ServerProtocolTest {
         assertTrue(explanations[0].message.isNotEmpty())
         assertNotNull(explanations[0].description)
         assertContains(html, "LANG.ARITH.DIVZERO")
+    }
+
+    @Test
+    fun `refuses to resolve warnings without a hub`() {
+        awaitLoaded()
+
+        val warning = Warning.parseList(execute(Commands.WARNINGS)).first()
+        val argument = ResolveArgument.quiet(ResolveArgument.line(warning.uri, warning.line, Resolution.FIXED))
+        val error = assertFailsWith<ExecutionException> { execute(Commands.RESOLVE, argument) }
+
+        assertContains(CodeSonarService.errorMessage(Commands.RESOLVE, error), "no hub")
+        assertEquals(12, Status.parse(execute(Commands.STATUS)).shown)
     }
 
     @Test
