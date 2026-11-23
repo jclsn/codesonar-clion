@@ -1,6 +1,8 @@
 package com.github.jclsn.codesonar
 
 import com.github.jclsn.codesonar.lsp.CodeSonarLanguageClient
+import com.github.jclsn.codesonar.model.DisableCheckArgument
+import com.github.jclsn.codesonar.model.DisableCheckResult
 import com.github.jclsn.codesonar.model.Explanation
 import com.github.jclsn.codesonar.model.Json
 import com.github.jclsn.codesonar.model.Resolution
@@ -204,6 +206,17 @@ class ServerProtocolTest {
 
         assertContains(CodeSonarService.errorMessage(Commands.RESOLVE, error), "no hub")
         assertEquals(12, Status.parse(execute(Commands.STATUS)).shown)
+    }
+
+    @Test
+    fun `tells the outcome of disabling a check`() {
+        awaitLoaded()
+
+        val warning = Warning.parseList(execute(Commands.WARNINGS)).first()
+        val argument = ResolveArgument.quiet(DisableCheckArgument.of(warning.code))
+        val result = DisableCheckResult.parse(execute(Commands.DISABLE_CHECK, argument))
+
+        assertContains(result.message, warning.code)
     }
 
     @Test
