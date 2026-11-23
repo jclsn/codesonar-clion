@@ -55,9 +55,9 @@
       <action id="CodeSonar.Refresh" class="com.github.jclsn.codesonar.actions.RefreshAction"
               text="Refresh"
               description="Load the shown analysis again"/>
-      <action id="CodeSonar.Hide" class="com.github.jclsn.codesonar.actions.HideAction"
-              text="Hide Analysis"
-              description="Turn the shown analysis off until an analysis is shown again"/>
+      <action id="CodeSonar.Toggle" class="com.github.jclsn.codesonar.actions.ToggleAction"
+              text="Toggle Analysis"
+              description="Turn the shown analysis off, or the hidden one on again"/>
       <separator/>
       <action id="CodeSonar.Explain" class="com.github.jclsn.codesonar.actions.ExplainAction"
               text="Explain Warning"

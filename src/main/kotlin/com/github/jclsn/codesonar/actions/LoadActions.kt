@@ -34,9 +34,21 @@ class RefreshAction : CodeSonarAction() {
     }
 }
 
-/** Turns the shown analysis off, until another one is shown. */
-class HideAction : CodeSonarAction() {
+/** Turns the shown analysis off, or the hidden one on again. */
+class ToggleAction : CodeSonarAction() {
+    override fun update(event: AnActionEvent) {
+        super.update(event)
+
+        // The menu tells what the action does now.
+        val hidden = event.project?.let { CodeSonarService.getInstance(it).status.hidden } ?: return
+        event.presentation.text = text(hidden)
+    }
+
     override fun perform(project: Project, service: CodeSonarService, event: AnActionEvent) {
-        service.execute(Commands.HIDE) {}
+        service.execute(Commands.TOGGLE) {}
+    }
+
+    companion object {
+        fun text(hidden: Boolean): String = if (hidden) "Show Analysis" else "Hide Analysis"
     }
 }

@@ -93,7 +93,7 @@ workspace open.
 | Load Configured Analysis | `:CodeSonarLoad`        | Show the configured analysis. |
 | Load SARIF File...       | `:CodeSonarLoad file`   | Show an exported SARIF file. |
 | Refresh                  | `:CodeSonarRefresh`     | Load the shown analysis again. |
-| Hide Analysis            | `:CodeSonarHide`        | Turn the shown analysis off until an analysis is shown again. |
+| Hide Analysis / Show Analysis | `:CodeSonarToggle` | Turn the shown analysis off, or the hidden one on again. The menu shows what it does now; in **Settings \| Keymap** it is "Toggle Analysis". |
 | Explain Warning          | `:CodeSonarExplain`     | Explain the warnings in the line of the caret in a popup, like the "Show details" quick fix: the message, the events that lead to the warning and the rules it may violate. The places of events are links into the code. `j` `k` `Ctrl+D` `Ctrl+U` `g` `G` scroll, `o` opens the warning on the hub, `d` the documentation, `q` or `Esc` closes. |
 | Open in Hub              | `:CodeSonarOpenHub`     | Open the warning at the caret on the hub, or else the shown analysis. |
 | Mark as Fixed            | `:CodeSonarResolve fixed` | Resolve the warnings in the line of the caret on the hub, like the quick fix: their state becomes Fixed. The hub keeps it for later analyses, and resolved warnings are not shown any more. Your hub user needs the permission to change warnings. |

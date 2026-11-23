@@ -9,6 +9,7 @@ object Commands {
     const val UNCACHE = "codesonar.uncache"
     const val LOAD = "codesonar.load"
     const val HIDE = "codesonar.hide"
+    const val TOGGLE = "codesonar.toggle"
     const val STATUS = "codesonar.status"
     const val WARNINGS = "codesonar.warnings"
     const val ANALYZE_COMMAND = "codesonar.analyzeCommand"
