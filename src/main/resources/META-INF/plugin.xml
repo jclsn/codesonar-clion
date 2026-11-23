@@ -72,6 +72,9 @@
               class="com.github.jclsn.codesonar.actions.ResolveFalsePositiveAction"
               text="Mark as False Positive"
               description="Mark the warnings in the line of the caret as false positives on the hub"/>
+      <action id="CodeSonar.DisableCheck" class="com.github.jclsn.codesonar.actions.DisableCheckAction"
+              text="Disable Check"
+              description="Turn off the check of the warning in the line of the caret in the workspace configuration"/>
       <action id="CodeSonar.Warnings" class="com.github.jclsn.codesonar.actions.WarningsAction"
               text="Show Warnings"
               description="List the shown warnings in a tool window"/>

@@ -19,5 +19,6 @@ object Commands {
     const val CONFIGURE_ANALYSIS = "codesonar.configureAnalysis"
     const val EXPLAIN = "codesonar.explain"
     const val RESOLVE = "codesonar.resolve"
+    const val DISABLE_CHECK = "codesonar.disableCheck"
     const val REFRESH = "codesonar.refresh"
 }

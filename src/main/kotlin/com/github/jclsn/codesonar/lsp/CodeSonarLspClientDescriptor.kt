@@ -2,6 +2,7 @@ package com.github.jclsn.codesonar.lsp
 
 import com.github.jclsn.codesonar.CodeSonarService
 import com.github.jclsn.codesonar.Commands
+import com.github.jclsn.codesonar.actions.DisableCheckAction
 import com.github.jclsn.codesonar.actions.ExplainAction
 import com.github.jclsn.codesonar.actions.ResolveAction
 import com.github.jclsn.codesonar.settings.CodeSonarSettings
@@ -51,7 +52,8 @@ class CodeSonarLspClientDescriptor(
     override val lspCustomization: LspCustomization = object : LspCustomization() {
         override val commandsCustomizer: LspCommandsCustomizer = object : LspCommandsSupport() {
             // The explain code action is shown here instead of in the server,
-            // and the outcome of resolving warnings like the other messages.
+            // and the outcome of resolving warnings and of disabling checks
+            // like the other messages.
             override fun executeCommand(lspClient: LspClient, contextFile: VirtualFile, command: Command) {
                 val argument = command.arguments?.firstOrNull()
 
@@ -63,6 +65,7 @@ class CodeSonarLspClientDescriptor(
                     }
 
                     Commands.RESOLVE -> onEdt { ResolveAction.resolve(project, argument) }
+                    Commands.DISABLE_CHECK -> onEdt { DisableCheckAction.disable(project, argument) }
                     else -> super.executeCommand(lspClient, contextFile, command)
                 }
             }
