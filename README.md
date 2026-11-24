@@ -29,15 +29,20 @@ It is the counterpart of [codesonar.vim] for CLion.
 
 [codesonar-lsp]: https://github.com/jclsn/codesonar-lsp
 [codesonar.vim]: https://github.com/jclsn/codesonar.vim
+[server-releases]: https://github.com/jclsn/codesonar-lsp/releases
 
 ## Installation
 
-Requirements: CLion 2026.3 or newer and `codesonar-lsp` (`cargo install
---path .` in its repository). Running analyses needs the CodeSonar command
-line tools.
+Requirements: CLion 2026.3 or newer and `codesonar-lsp`: download its
+binary from its [releases][server-releases] and put it into a directory in
+your `PATH`, or run `cargo install --path .` in its repository. Running
+analyses needs the CodeSonar command line tools.
 
-Build the plugin and install the ZIP file in `build/distributions` with
-**Settings | Plugins | ⚙ | Install Plugin from Disk**:
+Download the ZIP file of the plugin from the
+[releases](https://github.com/jclsn/codesonar-clion/releases) and install
+it with **Settings | Plugins | ⚙ | Install Plugin from Disk**.
+
+Or build it yourself; the ZIP file is in `build/distributions`:
 
 ```sh
 ./gradlew buildPlugin
@@ -79,6 +84,20 @@ The hub, the project and how analyses run come from the `codesonar.conf`
 of each workspace: open a file of your project and run **Tools | CodeSonar
 | Workspace Configuration**. It asks for the hub address, the hub project
 and the build commands and writes them into the file.
+
+## Security
+
+Any repository can name any hub in the `HUB_ADDRESS` of its
+`codesonar.conf`. So before the server signs in to a hub with your
+credentials, it asks you in a notification, unless it is the hub of the
+**URL** setting or one you trusted before. "Sign in" is remembered;
+otherwise the hub is used without signing in.
+
+An analysis runs the build commands of `codesonar.conf`, just as `make`
+runs a Makefile, so only analyze repositories you trust. The plugin starts
+analyses only with **Analyze** and **Analyze As...**.
+
+Links of analyses and the hub are only opened if they are web links.
 
 ## Actions
 
@@ -132,3 +151,19 @@ or the one in `$PATH`, and are skipped without it:
 ```sh
 CODESONAR_LSP=~/.cargo/bin/codesonar-lsp ./gradlew test
 ```
+
+To release a version, set `pluginVersion` in `gradle.properties`, commit,
+and push a tag named after it:
+
+```sh
+git tag v0.1.0
+git push origin v0.1.0
+```
+
+The release workflow then runs the tests, against the released
+codesonar-lsp, builds the plugin and publishes its ZIP file as a GitHub
+release with its checksum.
+
+## License
+
+[MIT](LICENSE)
