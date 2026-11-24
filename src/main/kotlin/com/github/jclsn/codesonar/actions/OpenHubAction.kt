@@ -4,7 +4,7 @@ import com.github.jclsn.codesonar.CodeSonarService
 import com.github.jclsn.codesonar.Commands
 import com.github.jclsn.codesonar.Notifier
 import com.github.jclsn.codesonar.model.Warning
-import com.intellij.ide.BrowserUtil
+import com.github.jclsn.codesonar.ui.Browser
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.project.Project
@@ -20,7 +20,7 @@ class OpenHubAction : CodeSonarAction() {
             val url = hubUrl(Warning.parseList(result), path, line) ?: service.status.url
 
             if (url != null) {
-                BrowserUtil.browse(url, project)
+                Browser.open(project, url)
             } else {
                 Notifier.error(project, "No warning with a hub link at the caret")
             }

@@ -3,9 +3,9 @@ package com.github.jclsn.codesonar.actions
 import com.github.jclsn.codesonar.CodeSonarService
 import com.github.jclsn.codesonar.Commands
 import com.github.jclsn.codesonar.model.Status
+import com.github.jclsn.codesonar.ui.Browser
 import com.github.jclsn.codesonar.ui.HtmlPopup
 import com.github.jclsn.codesonar.ui.StatusHtml
-import com.intellij.ide.BrowserUtil
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.project.Project
 
@@ -21,7 +21,7 @@ class StatusAction : CodeSonarAction() {
             CodeSonarService.getInstance(project).execute(Commands.STATUS) { result ->
                 val status = Status.parse(result)
                 val keys = buildMap<Char, () -> Unit> {
-                    status.url?.let { put('o') { BrowserUtil.browse(it, project) } }
+                    status.url?.let { put('o') { Browser.open(project, it) } }
                 }
 
                 HtmlPopup.show(

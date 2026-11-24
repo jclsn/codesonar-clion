@@ -2,7 +2,6 @@ package com.github.jclsn.codesonar.ui
 
 import com.github.jclsn.codesonar.CodeSonarService
 import com.github.jclsn.codesonar.model.uriToPath
-import com.intellij.ide.BrowserUtil
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.popup.JBPopup
@@ -96,7 +95,7 @@ object HtmlPopup {
         val location = Html.parseLocation(href)
 
         if (location == null) {
-            BrowserUtil.browse(href, project)
+            Browser.open(project, href)
             return
         }
 

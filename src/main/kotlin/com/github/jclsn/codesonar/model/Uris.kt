@@ -13,3 +13,14 @@ fun uriToPath(uri: String): String? = try {
 /** The file name of a URI. */
 fun uriFileName(uri: String): String =
     (uriToPath(uri) ?: uri).substringAfterLast('/').substringAfterLast('\\')
+
+/**
+ * Whether a link may be opened in a browser: only `http` and `https`.
+ * Links come from analyses and the hub, and other schemes, like `file`,
+ * can start other programs.
+ */
+fun isWebLink(url: String): Boolean = try {
+    URI(url.trim()).let { it.scheme?.lowercase() in setOf("http", "https") && !it.host.isNullOrEmpty() }
+} catch (_: Exception) {
+    false
+}

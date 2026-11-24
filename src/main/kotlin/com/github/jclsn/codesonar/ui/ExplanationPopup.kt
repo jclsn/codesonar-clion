@@ -2,7 +2,6 @@ package com.github.jclsn.codesonar.ui
 
 import com.github.jclsn.codesonar.Notifier
 import com.github.jclsn.codesonar.model.Explanation
-import com.intellij.ide.BrowserUtil
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.project.Project
 
@@ -15,8 +14,8 @@ object ExplanationPopup {
         }
 
         val keys = buildMap<Char, () -> Unit> {
-            ExplanationHtml.link(explanations) { it.hubUri }?.let { put('o') { BrowserUtil.browse(it, project) } }
-            ExplanationHtml.link(explanations) { it.helpUri }?.let { put('d') { BrowserUtil.browse(it, project) } }
+            ExplanationHtml.link(explanations) { it.hubUri }?.let { put('o') { Browser.open(project, it) } }
+            ExplanationHtml.link(explanations) { it.helpUri }?.let { put('d') { Browser.open(project, it) } }
         }
 
         HtmlPopup.show(
