@@ -25,31 +25,56 @@ the editor, explained on hover and listed in the Problems tool window.
 in CodeSonar Hub", for warnings of a hub "Mark as fixed" and "Mark as false
 positive", and "Disable check".
 
-It is the counterpart of [codesonar.vim] for CLion.
-
 [codesonar-lsp]: https://github.com/jclsn/codesonar-lsp
-[codesonar.vim]: https://github.com/jclsn/codesonar.vim
 [server-releases]: https://github.com/jclsn/codesonar-lsp/releases
 
 ## Installation
 
-Requirements: CLion 2026.3 or newer and `codesonar-lsp`: download its
-binary from its [releases][server-releases] and put it into a directory in
-your `PATH`, or run `cargo install --path .` in its repository. Running
-analyses needs the CodeSonar command line tools.
+Requirements: CLion 2026.3 or newer. Running analyses also needs the
+CodeSonar command line tools in your `PATH`.
 
-Download the ZIP file of the plugin from the
-[releases](https://github.com/jclsn/codesonar-clion/releases) and install
-it with **Settings | Plugins | ⚙ | Install Plugin from Disk**.
+1. Install the `codesonar-lsp` server. Download it from its
+   [releases][server-releases]; the packages install on any release of
+   Debian, Ubuntu, RHEL or AlmaLinux:
 
-Or build it yourself; the ZIP file is in `build/distributions`:
+   ```sh
+   sudo apt install ./codesonar-lsp_0.1.0-1_amd64.deb    # Debian, Ubuntu
+   sudo dnf install ./codesonar-lsp-0.1.0-1.x86_64.rpm   # RHEL, AlmaLinux
+   ```
+
+   On other systems, put the binary of the `.tar.gz` (Linux) or the `.zip`
+   (Windows) into a directory in your `PATH`. Or build it with `cargo
+   install --path .` in its repository, which installs it into
+   `~/.cargo/bin`.
+
+2. Download the ZIP file of the plugin, `codesonar-clion-<version>.zip`,
+   from the [releases](https://github.com/jclsn/codesonar-clion/releases).
+   Do not unpack it.
+
+3. In CLion, open **Settings | Plugins**, click the gear icon, choose
+   **Install Plugin from Disk...** and select the ZIP file. Restart CLion
+   when it asks.
+
+4. Open **Settings | Tools | CodeSonar** and enter your hub user and
+   password, see [Setup](#setup). If the server is not in your `PATH` or
+   in `~/.cargo/bin`, enter its path there as well.
+
+5. Open a C or C++ file of your project. The status bar shows `CodeSonar`
+   and then the analysis that is shown. If your project has no
+   `codesonar.conf` yet, run **Tools | CodeSonar | Workspace
+   Configuration** to create it.
+
+To update the plugin, install the new ZIP file the same way. To remove it,
+disable or uninstall "CodeSonar" in **Settings | Plugins | Installed**.
+
+### Building from source
 
 ```sh
 ./gradlew buildPlugin
 ```
 
-The build downloads CLion. To build against an installed one instead, pass
-its path, or set `CLION_HOME`:
+The ZIP file is in `build/distributions`. The build downloads CLion. To
+build against an installed one instead, pass its path, or set `CLION_HOME`:
 
 ```sh
 ./gradlew buildPlugin -PclionPath=/opt/clion
@@ -106,37 +131,32 @@ with a running server. They have no shortcuts; assign some in **Settings |
 Keymap**. The actions need a running server, so use them with a file of the
 workspace open.
 
-| Action                   | codesonar.vim           | Description |
-| ------------------------ | ----------------------- | ----------- |
-| Analyses...              | `:CodeSonarAnalyses`    | List the analyses of the hub project, newest first. The shown one is marked with `*`, one that is loading with `~`, downloaded ones with `[cached]`. `Enter` or a double click shows an analysis, `Space` shows or hides one and keeps the list open, `x` deletes its local copy, `d` deletes it from the hub after a confirmation. |
-| Load Configured Analysis | `:CodeSonarLoad`        | Show the configured analysis. |
-| Load SARIF File...       | `:CodeSonarLoad file`   | Show an exported SARIF file. |
-| Refresh                  | `:CodeSonarRefresh`     | Load the shown analysis again. |
-| Hide Analysis / Show Analysis | `:CodeSonarToggle` | Turn the shown analysis off, or the hidden one on again. The menu shows what it does now; in **Settings \| Keymap** it is "Toggle Analysis". |
-| Explain Warning          | `:CodeSonarExplain`     | Explain the warnings in the line of the caret in a popup, like the "Show details" quick fix: the message, the events that lead to the warning and the rules it may violate. The places of events are links into the code. `j` `k` `Ctrl+D` `Ctrl+U` `g` `G` scroll, `o` opens the warning on the hub, `d` the documentation, `q` or `Esc` closes. |
-| Open in Hub              | `:CodeSonarOpenHub`     | Open the warning at the caret on the hub, or else the shown analysis. |
-| Mark as Fixed            | `:CodeSonarResolve fixed` | Resolve the warnings in the line of the caret on the hub, like the quick fix: their state becomes Fixed. The hub keeps it for later analyses, and resolved warnings are not shown any more. Your hub user needs the permission to change warnings. |
-| Mark as False Positive   | `:CodeSonarResolve false-positive` | Resolve them as wrong: their finding becomes False Positive. |
-| Disable Check            | "Disable check" code action | Turn off the check of the warning in the line of the caret, like the quick fix: the check is disabled in the `codesonar.conf` of the workspace for later analyses, and its warnings are hidden now. With several warnings in the line, a list asks for the check. **Checks...** turns it on again. |
-| Show Warnings            | `:CodeSonarDiagnostics` | List the shown warnings in the CodeSonar tool window. `Enter` or a double click goes to a warning. The list is updated when another analysis is shown. |
-| Status                   | `:CodeSonarStatus`      | Show the analysis with its page on the hub, how many of its warnings are unchanged, moved, changed, unverified and resolved, and the hub and presets of new analyses. `o` opens the analysis on the hub. A click on the status bar widget shows it as well. |
-| Analyze                  | `:CodeSonarAnalyze`     | Run `codesonar analyze` for the workspace in the Run tool window. When it succeeds, the new analysis is shown. |
-| Analyze As...            | `:CodeSonarAnalyze name` | Run an analysis with a name on the hub. |
-| Workspace Configuration  | `:CodeSonarConf`        | Open the `codesonar.conf` of the workspace. Without it, or without the section of codesonar-lsp in it, a form asks for the basic settings first. |
-| Presets...               | `:CodeSonarPresets`     | Tick the CodeSonar presets of analyses, e.g. `misrac2025`. The field filters them while typing. |
-| Checks...                | `:CodeSonarChecks`      | Tick the checks (warning classes) of analyses. Checks that differ from CodeSonar's default are marked "(changed)". |
-| Connect to Hub...        | `:CodeSonarConnect`     | Sign in to a hub and choose one of its projects. Without a URL, the configured hub is used. The hub, the user and the password are kept in the settings, unless "Remember" is unticked. |
-| Projects...              | `:CodeSonarProjects`    | Choose another project of the hub. |
+| Action                   | Description |
+| ------------------------ | ----------- |
+| Analyses... | List the analyses of the hub project, newest first. The shown one is marked with `*`, one that is loading with `~`, downloaded ones with `[cached]`. `Enter` or a double click shows an analysis, `Space` shows or hides one and keeps the list open, `x` deletes its local copy, `d` deletes it from the hub after a confirmation. |
+| Load Configured Analysis | Show the configured analysis. |
+| Load SARIF File... | Show an exported SARIF file. |
+| Refresh | Load the shown analysis again. |
+| Hide Analysis / Show Analysis | Turn the shown analysis off, or the hidden one on again. The menu shows what it does now; in **Settings \| Keymap** it is "Toggle Analysis". |
+| Explain Warning | Explain the warnings in the line of the caret in a popup, like the "Show details" quick fix: the message, the events that lead to the warning and the rules it may violate. The places of events are links into the code. `j` `k` `Ctrl+D` `Ctrl+U` `g` `G` scroll, `o` opens the warning on the hub, `d` the documentation, `q` or `Esc` closes. |
+| Open in Hub | Open the warning at the caret on the hub, or else the shown analysis. |
+| Mark as Fixed | Resolve the warnings in the line of the caret on the hub, like the quick fix: their state becomes Fixed. The hub keeps it for later analyses, and resolved warnings are not shown any more. Your hub user needs the permission to change warnings. |
+| Mark as False Positive | Resolve them as wrong: their finding becomes False Positive. |
+| Disable Check | Turn off the check of the warning in the line of the caret, like the quick fix: the check is disabled in the `codesonar.conf` of the workspace for later analyses, and its warnings are hidden now. With several warnings in the line, a list asks for the check. **Checks...** turns it on again. |
+| Show Warnings | List the shown warnings in the CodeSonar tool window. `Enter` or a double click goes to a warning. The list is updated when another analysis is shown. |
+| Status | Show the analysis with its page on the hub, how many of its warnings are unchanged, moved, changed, unverified and resolved, and the hub and presets of new analyses. `o` opens the analysis on the hub. A click on the status bar widget shows it as well. |
+| Analyze | Run `codesonar analyze` for the workspace in the Run tool window. When it succeeds, the new analysis is shown. |
+| Analyze As... | Run an analysis with a name on the hub. |
+| Workspace Configuration | Open the `codesonar.conf` of the workspace. Without it, or without the section of codesonar-lsp in it, a form asks for the basic settings first. |
+| Presets... | Tick the CodeSonar presets of analyses, e.g. `misrac2025`. The field filters them while typing. |
+| Checks... | Tick the checks (warning classes) of analyses. Checks that differ from CodeSonar's default are marked "(changed)". |
+| Connect to Hub... | Sign in to a hub and choose one of its projects. Without a URL, the configured hub is used. The hub, the user and the password are kept in the settings, unless "Remember" is unticked. |
+| Projects... | Choose another project of the hub. |
 
-What differs from codesonar.vim:
-
-- The progress of downloads is shown by the IDE as a background task; the
-  status bar widget shows the analysis. It can be turned off in the context
-  menu of the status bar.
-- Hub links open in the browser of **Settings | Tools | Web Browsers and
-  Preview**, so there is no `browser` setting.
-- Other plugins can subscribe to `CodeSonarListener.TOPIC` on the message
-  bus of the project instead of the `CodeSonarLoaded` event.
+While an analysis is downloaded, the IDE shows the progress as a
+background task. The status bar widget shows the analysis; it can be turned
+off in the context menu of the status bar. Hub links open in the browser of
+**Settings | Tools | Web Browsers and Preview**.
 
 ## Development
 
@@ -151,6 +171,10 @@ or the one in `$PATH`, and are skipped without it:
 ```sh
 CODESONAR_LSP=~/.cargo/bin/codesonar-lsp ./gradlew test
 ```
+
+Other plugins can subscribe to `CodeSonarListener.TOPIC` on the message bus
+of the project to learn when an analysis starts loading and when it is
+shown.
 
 To release a version, set `pluginVersion` in `gradle.properties`, commit,
 and push a tag named after it:
